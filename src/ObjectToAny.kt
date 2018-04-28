@@ -191,5 +191,5 @@ inline fun <T> check(lock: Lock, body: () -> T): T {
 }
 
 fun <T> otherCheck(body: ()-> T){
-
+    //测试一次
 }

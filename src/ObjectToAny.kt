@@ -22,21 +22,29 @@ class Rect(var width:Int,var height:Int){
         return width*height
     }
 }
-//继承
+//继承(默认来说所有的类都是final的，除非现式的声明)
+// 原则： 设计一个基类时，应该避免在构造函数、属性初始化器以及 init 块中使用 open 成员(因为父类先于子类初始化
+// 子类重写的open还未初始化，可能在父类使用时会不正确，此时父类用的open是自己的，不是子类的)
 open class Father{
     var charactor:String = "好人"
     fun action(){
     }
-    open fun action2(){
+    open fun action2(){//open表示继承会重写，重写之后的“孙子”类如果不想允许重写，就要在子类重写前面加上final
     }
 }
-class Son:Father(){
+open class Son():Father(){
     init {
         //初始化只能放在init关键字做初始化，主构造不能包含任何代码
         charactor = "坏人"
     }
-    override fun action2(){
+    constructor(power:String) : this() {
+        //第二构造传值，继承的子也要传值
     }
+    final override fun action2(){
+    }
+}
+class grandSon(power:String): Son(power) {
+
 }
 //抽象
 abstract class HuMan(name:String){
@@ -45,11 +53,26 @@ abstract class HuMan(name:String){
 }
 //接口
 interface IMan {
+    val prop: Int // 抽象的
+    var propertyWithImplementation: String
+        get() {
+                return "foo"
+        }
+       //返回了get  所以不是抽象的
+        set(value){
+            println("currentValue:$value")
+        }
     fun keke()
+    fun foo() {//有括号内容实现，所以也不是抽象的
+        print(prop)
+    }
 }
 class Man(name:String):HuMan(name),IMan{
+    override val prop: Int = 29
     override fun keke() {
 //        TODO("not implemented")
+        propertyWithImplementation
+        propertyWithImplementation = "Ace"
     }
     override fun eat() {
 //        TODO("not implemented")
@@ -63,6 +86,7 @@ class OtherMan(name:String):IMan by Man(name){
 }
 //单例(直接创建在jvm内存之中，并且唯一)
 object ThirdMan:IMan{
+    override val prop: Int = 30
     override fun keke() {
     }
 }
@@ -103,12 +127,34 @@ internal fun 同一模块访问修饰符(){
 
 }
 
+//重写set，get;当一个属性需要一个幕后字段时，Kotlin 会自动提供field ，标识符只能用在属性的访问器内。
+var stringRepresentation:String? = null // 这里等于null 这个初始器直接为幕后字段赋值 为 null
+    get() = stringRepresentation.toString()
+    private set(value) {
+        if(value==="Ace"){
+            field = value
+        }
+    }
+//因为通过默认 getter 和 setter 访问私有属性会被优化，所以不会引入函数调用开销;默认属性
+private var _table: Map<String, Int>? = null
+public val table: Map<String, Int>
+    get() {
+        if (_table == null) {
+            _table = HashMap() // 类型参数已推断出
+        }
+        return _table ?: throw AssertionError("Set to null by another thread")
+    }
+//    set(v){//这里是不行的  val没有set，只有一个get，交给了_table
+//
+//    }
+
 fun main(args: Array<String>) {
     var rect01 = Rect(20,20)
     println("高度:${rect01.height}")
     var son = Son()
     println("儿子：${son.charactor}")
     var man1 = Man("Ace")
+    man1.keke()
     var man2 = Man("BASH")
     var man3 = Man("COLOR")
     var listMan = listOf<HuMan>(man1,man2,man3)
@@ -163,13 +209,19 @@ fun main(args: Array<String>) {
     //单例
     var singleton = Singleton.getInstance()
 
-    //重写set，get
-//    private var strings:String?=null
-//        private get() = ""
-//        private set
-
     //lateinit延迟加载，不能初始化的
-    lateinit var string:String
+    Lateinit().initializationLogic()
+
+    //if可以作为表达式，直接if xx  则xx  else  xx，不需要三目运算符
+
+    //标签，break，continue;标签限制的 break 跳转到刚好位于该标签指定的循环后面的执行点
+    // (如果这里不是break@loop，那么会继续loop，加了则会出去),foo方法里的循环也是一样
+    loop@ for (i in 1..100) {
+        for (j in 1..100) {
+            if (i==3&&j==1) break@loop
+        }
+    }
+    foo()//继续测试标签的使用
 }
 
 /**
@@ -190,6 +242,68 @@ inline fun <T> check(lock: Lock, body: () -> T): T {
     }
 }
 
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach lit@{
+        if (it == 3) return@lit // 局部返回到该 lambda 表达式的调用者，即 forEach 循环   @forEach代替@lit也可以
+        print(it)//这里打印结果应该是： 1245 done with explicit label  如果是直接return ：12
+    }
+    print(" done with explicit label")
+
+    //调用run函数块。返回值为函数块最后一行，或者指定return表达式
+    run loop@{
+        listOf(1, 2, 3, 4, 5).forEach {
+            if (it == 3) return@loop // 从传入 run 的 lambda 表达式非局部返回
+            print(it)
+        }
+    }
+    print(" done with nested loop")// 最后结果就是  12 done with nested loop
+
+    //调用某对象的also函数，则该对象为函数的参数。在函数块内可以通过 it 指代该对象。返回值为该对象自己。
+    val a = "string".also {
+        println(it)
+    }
+    println(a)
+}
+
 fun <T> otherCheck(body: ()-> T){
     //测试一次
+}
+
+/**
+ * 超类调用
+ */
+open class Foo {
+    open fun f() { println("Foo.f()") }
+    open val x: Int get() = 1
+}
+class Bar1 : Foo() {
+    override fun f() {
+        //使用 super 关键字调用其超类的函数与属性访问器的实现,下面尖括号可以指定父类，比如还有一个父接口也有一个f方法
+        super<Foo>.f()
+        println("Bar1.f()")
+    }
+
+    override val x: Int get() = super.x + 1
+}
+class Bar2 : Foo() {
+    override fun f() { /* …… */ }
+    override val x: Int get() = 0
+
+    //内部类中访问外部类的超类，可以通过由外部类名限定的 super 关键字来实现：super@Outer
+    inner class Baz {
+        fun g() {
+            super@Bar2.f() // 调用 Foo 实现的 f()
+            println(super@Bar2.x) // 使用 Foo 实现的 x 的 getter
+        }
+    }
+}
+
+//延迟加载
+class Lateinit {
+    lateinit var lateinitVar: String
+    fun initializationLogic() {
+        println("isInitialized before assignment: " + this::lateinitVar.isInitialized)
+        lateinitVar = "value"
+        println("isInitialized after assignment: " + this::lateinitVar.isInitialized)
+    }
 }

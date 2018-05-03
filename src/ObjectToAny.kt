@@ -1,5 +1,4 @@
-import model.DiscoverModel
-import sun.rmi.runtime.Log
+import classtype.swap
 import java.util.concurrent.locks.Lock
 
 //函数式闭包(方法的返回值可以是一个方法，并且规定该方法的返回值)
@@ -222,6 +221,26 @@ fun main(args: Array<String>) {
         }
     }
     foo()//继续测试标签的使用
+
+    //扩展函数
+    val l = mutableListOf(1, 2, 3, 9, 60, 54, 8, 21)
+    l.swap(0, 1)
+
+    //data数据的复制
+    var person:Person = Person("heyx")
+    person.copy("yasin")
+    //解析声明
+    val name = person.component1()//多参数类型可以  （Param1，param2） = obj
+    //在 toString()、 equals()、 hashCode() 以及 copy() 的实现中只会用到 name 属性
+    val person1 = Person("John")
+    val person2 = Person("John")
+    person1.age = 10
+    person2.age = 20
+    person1===person2
+    println("person1 == person2: ${person1 == person2}")
+    println("person1 with age ${person1.age}: ${person1}")
+    println("person2 with age ${person2.age}: ${person2}")
+    //这里打印结果是 true ，认为这两个对象的值是相等的，===是不相等的
 }
 
 /**

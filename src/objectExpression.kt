@@ -2,16 +2,23 @@
 //有时候，我们需要创建一个对某个类做了轻微改动的类的对象，而不用为之显式声明新的子类。 Java 用匿名内部类 处理这种情况
 open class A(x: Int) {
     public open val y: Int = x
+    public open var x1:Int = x
 }
 
 interface B {
-
+    fun xy()
 }
 
 //如果超类型有一个构造函数，则必须传递适当的构造函数参数给它。 多个超类型可以由跟在冒号后面的逗号分隔的列表指定(匿名类的对象)
 val ab: A = object : A(1),B {
+    override fun xy() {
+        y+x1
+    }
     override val y: Int
         get() = 15
+    override var x1: Int
+        get() = super.x1
+        set(value) {}
 }
 
 //
@@ -57,10 +64,14 @@ class C {
 }
 
 /*
+object相当于 static class
 当关键字object之后指定了一个名称, 那么它就不再是“对象表达式”，而是一个对“对象声明”
  * 此时，此对象不再是表达式，看作类的变种更为合适吧，不能再将其赋值给一个变量。在使用它时，只需要它的名字引用即可
  */
 object MyInfo: A(1),B {
+    override fun xy() {
+
+    }
     override val y: Int
         get() = 14
 }

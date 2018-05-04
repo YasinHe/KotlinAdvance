@@ -1,8 +1,9 @@
 import classtype.swap
+import model.Person
 import java.util.concurrent.locks.Lock
 
 //函数式闭包(方法的返回值可以是一个方法，并且规定该方法的返回值)
-fun funcation():()->String{
+fun funcation():()->String{//返回一个函数，并且函数的返回值需要是String
     var x = 0
 //    ++x
     return fun():String{
@@ -37,7 +38,7 @@ open class Son():Father(){
         charactor = "坏人"
     }
     constructor(power:String) : this() {
-        //第二构造传值，继承的子也要传值
+        //第二构造传值，继承的子也要传值(看下面的grandSon)
     }
     final override fun action2(){
     }
@@ -53,7 +54,8 @@ abstract class HuMan(name:String){
 //接口
 interface IMan {
     val prop: Int // 抽象的
-    var propertyWithImplementation: String
+//    get() = 1   //加上这个就非抽象了,因为接口里的值是不能初始化的，所以子必须实现然后给一个值，或者接口通过get返回值那也行。
+    var propertyWithImplementation: String//非抽象的
         get() {
                 return "foo"
         }
@@ -69,18 +71,18 @@ interface IMan {
 class Man(name:String):HuMan(name),IMan{
     override val prop: Int = 29
     override fun keke() {
-//        TODO("not implemented")
         propertyWithImplementation
         propertyWithImplementation = "Ace"
     }
     override fun eat() {
-//        TODO("not implemented")
+        println("i am Man")
     }
 }
 //代理，b指挥a做接口需要做的事情(这里的by是创建一个新的Man对象，除非单例)
 class OtherMan(name:String):IMan by Man(name){
     override fun keke() {
         //我其实是OtherMan
+        println("i am OtherMan")
     }
 }
 //单例(直接创建在jvm内存之中，并且唯一)
@@ -117,7 +119,7 @@ infix fun List<HuMan>.fount(name:String){
         it.name == name
     }.forEach (::println)
     //  ::就是lambda的闭包，同理Math::max等效于(a, b)->Math.max(a, b),s::isEmpty等效于()->s.isEmpty()
-    //在java中使用一般是类名加方法名（称为方法引用）  Person::getName == person -> person.getName();
+    //在java中使用一般是类名加方法名（称为方法引用）  model.Person::getName == person -> person.getName();
     // () -> new HashMap<>();  ==  HashMap::new
 }
 
@@ -148,6 +150,11 @@ public val table: Map<String, Int>
 //    }
 
 fun main(args: Array<String>) {
+
+    var otherMan = OtherMan("Yasin")
+    println("${otherMan.prop}")
+    otherMan.keke()
+
     var rect01 = Rect(20,20)
     println("高度:${rect01.height}")
     var son = Son()
@@ -227,7 +234,7 @@ fun main(args: Array<String>) {
     l.swap(0, 1)
 
     //data数据的复制
-    var person:Person = Person("heyx")
+    var person: Person = Person("heyx")
     person.copy("yasin")
     //解析声明
     val name = person.component1()//多参数类型可以  （Param1，param2） = obj

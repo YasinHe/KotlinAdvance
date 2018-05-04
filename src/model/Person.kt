@@ -1,3 +1,5 @@
+package model
+
 //kotlin多重构造器(次构造函数)
 data class Person(var name: String) {
     var age:Int = 0

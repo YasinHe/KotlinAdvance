@@ -2,7 +2,7 @@ package classtype
 
 import java.awt.event.ActionListener
 
-//嵌套类
+//嵌套类(标记inner的才是内部类)
 class Outer {
     private val bar: Int = 1
     class Nested {
@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
     //下面的是匿名内部类实现,需要使用object 这个关键字
     Outer2().Inner().setListener(object : OnClickListener {
         override fun click() {
-
+            println("clicked")
         }
     })
 
@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
     //kotlin的需要这样
     val listener2 = object : OnClickListener {
         override fun click() {
-
+            println("clicked")
         }
     }
     Outer2().Inner().setListener(listener2)

@@ -16,6 +16,7 @@ fun MutableList<Int>.swap(index1: Int, index2: Int) {
 fun main(args: Array<String>) {
     val l = mutableListOf(1, 2, 3, 9, 60, 54, 8, 21)
     l.forEachIndexed { index, value ->
+        //run方法的意思是：调用run函数块。返回值为函数块最后一行，或者指定return表达式
         run {
             l.forEachIndexed { index, value ->
                 run {
@@ -32,7 +33,6 @@ fun main(args: Array<String>) {
         println(l[t])
     }
     println("--------------------")
-
 
     //成员扩展---------------------------------------------------------------------------------------------------
     class D {

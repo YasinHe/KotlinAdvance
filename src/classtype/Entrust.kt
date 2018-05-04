@@ -1,3 +1,5 @@
+package classtype
+
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
@@ -10,16 +12,16 @@ interface Base {
 }
 
 class BaseImpl(val x: Int) : Base {
-    override val message = "BaseImpl: x = $x"
+    override val message = "classtype.BaseImpl: x = $x"
     override fun print() { println(message) }
     fun print1(){
         println("print1")
     }
 }
 
-//Derived 的超类型列表中的 by-子句表示 b 将会在 Derived 中内部存储并且编译器将生成转发给 b 的所有 Base 的方法。
+//classtype.Derived 的超类型列表中的 by-子句表示 b 将会在 classtype.Derived 中内部存储并且编译器将生成转发给 b 的所有 classtype.Base 的方法。
 class Derived(b: Base) : Base by b{
-    override val message = "Message of Derived"
+    override val message = "Message of classtype.Derived"
 //    override fun print() { print(message) }//覆盖之后就不会被b的base影响了
     fun print1(){
         println("print2")
@@ -33,9 +35,9 @@ fun main(args: Array<String>) {
     Derived(b).print1()
     //重写的成员不会在委托对象的成员中调用 ，委托对象的成员只能访问其自身对接口成员实现
     println(Derived(b).message)
-    //这里打印结果是10 和 print2 最后message是Message of Derived
+    //这里打印结果是10 和 print2 最后message是Message of classtype.Derived
 
-    //属性委托
+    //属性委托(重铸setter，getter)
     val e = Example()
     println(e.p)
     e.p = "NEW"

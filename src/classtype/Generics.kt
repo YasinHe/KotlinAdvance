@@ -19,6 +19,7 @@ fun demo(strs: Source<String>) {
 }
 
 interface Comparable<in T> {
+    //Operator overloading 操作重载符
     operator fun compareTo(other: T): Int
 }
 

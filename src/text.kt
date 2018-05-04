@@ -121,7 +121,7 @@ fun main(args: Array<String>) {
     val xs: IntArray = intArrayOf(1, 2, 3)
     xs[0] = xs[1] + xs[2]
     ass?.let {
-        for (i in it){
+        for (i in it.indices){
             println(ass[i])
         }
     }
@@ -215,7 +215,7 @@ fun sum(i :Int = 0,j :Int= 0,k :Int= 0) : Int{
     return i+j+k
 }
 
-// :Unit 表示无返回值 vararg可变参数(只能一个个传值，不能直接使用外部Array)
+// :Unit 表示无返回值 vararg可变参数(可变参数就是不定数量参数，这里意思类似于java的String...lists)
 fun lists(vararg lists:String) : Unit{
     for(date in lists){
         //类似于instanceof(判断对象类型)
@@ -272,8 +272,20 @@ fun whileFuncation(){
         if (it == 0) return@forEach
         print(it)
     }
+    ints.forEach {
+        //        if (it == 0) return//这里是完全跳出的
+//        print(it)
+    }
+    //这个和下面那个是等价的，其实一个匿名，一个不是匿名
+    ints.forEach {
+        fun go(k: Int) {
+            if (k == 0) return//只跳出一次，因为这是一个匿名方法，所以返回return的是方法
+            print(k)
+        }
+        go(it)
+    }
     ints.forEach(fun(value: Int) {
-        if (value == 0) return
+        if (value == 0) return//只跳出一次，因为这是一个匿名方法，所以返回return的是方法
         print(value)
     })
 
@@ -312,12 +324,14 @@ fun whileFuncation(){
     /**
      * lambda
      */
-    fun test(num1 : Int, bool : (Int) -> Boolean) : Int{
-        return if (bool(num1)){ num1 } else 0
+    fun test(num1: Int, bool: (Int) -> Boolean): Int {
+        return if (bool(num1)) {
+            num1
+        } else 0
     }
     //it是在当一个高阶函数中Lambda表达式的参数只有一个的时候可以使用it来使用此参数。it可表示为单个参数的隐式名称，是Kotlin语言约定的
-    println(test(10,{it > 5}))
-    println(test(4,{it > 5}))
+    println(test(10, { it > 5 }))
+    println(test(4, { it > 5 }))
     //可以用下划线(_)表示未使用的参数，表示不处理这个参数
     val map2 = mapOf("key1" to "value1","key2" to "value2","key3" to "value3")
     map2.forEach{
@@ -340,7 +354,7 @@ fun whileFuncation(){
      * res（初始化为1）维护递归层次的深度。这就让我们避免了每次还需要将返回值再乘以n
      * Java并不支持尾递归，因为尾递归实际上是依赖编译器的优化，java可以利用lambda的懒加载来实现
      */
-    fun facttail( n:Int,  res:Int):Int
+    tailrec fun facttail( n:Int,  res:Int):Int
     {
         if (n < 0)
             return 0;

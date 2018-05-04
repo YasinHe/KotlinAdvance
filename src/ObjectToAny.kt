@@ -47,7 +47,7 @@ class grandSon(power:String): Son(power) {
 
 }
 //抽象
-abstract class HuMan(name:String){
+abstract class HuMan(name:String = "Jack"){
     var name = name;
     abstract fun eat()//抽象方法不能有实现
 }
@@ -79,7 +79,8 @@ class Man(name:String):HuMan(name),IMan{
     }
 }
 //代理，b指挥a做接口需要做的事情(这里的by是创建一个新的Man对象，除非单例)
-class OtherMan(name:String):IMan by Man(name){
+class OtherMan(name:String="Ok",hair:String = "Long"):IMan by Man(name){
+    val hair:String = hair
     override fun keke() {
         //我其实是OtherMan
         println("i am OtherMan")
@@ -150,7 +151,7 @@ public val table: Map<String, Int>
 //    }
 
 fun main(args: Array<String>) {
-
+    //这里只输出了一个参数name，显示的表示了name，而hair有默认值，不写就用默认值;当然如果不写默认值那这里就报错了,除非用lambda
     var otherMan = OtherMan("Yasin")
     println("${otherMan.prop}")
     otherMan.keke()

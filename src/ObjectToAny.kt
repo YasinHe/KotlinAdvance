@@ -114,7 +114,7 @@ sealed class Gril{
     class AdultGril:Gril()
 }
 
-//dsl 领域特定语言(声明式编程)
+//dsl 领域特定语言(声明式编程)又叫中缀表示法(要求：必须是成员、扩展函数，必须只有一个参数，参数不可以接受可变数量参数而且不可以有默认值)
 infix fun List<HuMan>.fount(name:String){
     filter {
         it.name == name

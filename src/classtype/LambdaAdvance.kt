@@ -8,25 +8,43 @@ import sum
  * 作为参数传递给其他高阶函数以及从其他高阶函数返回。
  * 可以像操作任何其他非函数值一样操作函数。
  */
+
+/**
+ * 高阶函数
+ */
+//Collection<T>.fold是扩展函数，首先参数 combine 具有函数类型 (R, T) -> R，所以fold接受一个函数作为参数
+//这个函数接受类型为R和T，并且返回一个R类型的值，在for循环内部调用这个函数，然后返回赋值
+fun <T, R> Collection<T>.fold(
+        initial: R,
+        combine:(acc: R, nextElement: T) -> R
+): R {
+    var accumulator: R = initial
+    for (element: T in this) {
+        accumulator = combine(accumulator, element)
+    }
+    return accumulator
+}
+
 fun main(args: Array<String>) {
     val items = listOf(1, 2, 3, 4, 5)
     // Lambdas 表达式是花括号括起来的代码块。
-    items.fold(0, {
-        // 如果一个 lambda 表达式有参数，前面是参数，后跟“->”
-        acc: Int, i: Int ->
-        print("acc = $acc, i = $i, ")
-        val result = acc + i
+    items.fold(0,{
+        // 如果一个 lambda 表达式有参数，前面是参数（名字随便），后跟“->”
+        acc: Int, nextElement: Int ->
+        print("acc = $acc, nextElement = $nextElement, ")
+        val result = acc + nextElement
         println("result = $result")
         // lambda 表达式中的最后一个表达式是返回值：
         result
     })
+    val items2 = listOf("1", "2", "3", "4", "5")
     // lambda 表达式的参数类型是可选的，如果能够推断出来的话：
     val joinedToString = items.fold("Elements:",
             { acc, i -> acc + " " + i })
     // 函数引用也可以用于高阶函数调用：
-    val product = items.fold(1, Int::times)
-    println("joinedToString = $joinedToString")
-    println("product = $product")
+    val product = items.fold(1, Int::times)// 1*1 -> 1*2 ->  2*3 ->  6*4 ->  24*5   所以Int::times相当于接受两个int参数，把他们相乘返回(times就是相乘的意思)
+    println("joinedToString = $joinedToString")//Elements: 1 2 3 4 5
+    println("product = $product")//120
 
     /**
      * 函数类型
@@ -106,22 +124,6 @@ fun main(args: Array<String>) {
     html {       // 带接收者的 lambda 由此开始
         body()   // 调用该接收者对象的一个方法
     }
-}
-
-/**
- * 高阶函数
- */
-//Collection<T>.fold是扩展函数，首先参数 combine 具有函数类型 (R, T) -> R，所以fold接受一个函数作为参数
-//这个函数接受类型为R和T，并且返回一个R类型的值，在for循环内部调用这个函数，然后返回赋值
-fun <T, R> Collection<T>.fold(
-        initial: R,
-        combine: (acc: R, nextElement: T) -> R
-): R {
-    var accumulator: R = initial
-    for (element: T in this) {
-        accumulator = combine(accumulator, element)
-    }
-    return accumulator
 }
 
 class HTML {

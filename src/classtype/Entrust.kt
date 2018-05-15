@@ -51,13 +51,14 @@ fun main(args: Array<String>) {
     //下面传的这个值得意思是：如果初始化委托的同步锁不是必需的，这样多个线程可以同时执行
     val lazyValue: String by lazy(LazyThreadSafetyMode.PUBLICATION) {
         println("computed!")
-        "Hello"
+        "Hello"//  等价于  return@lazy "Hello"
+
     }
     println(lazyValue)
     println(lazyValue)
     //打印结果 computed!  Hello  Hello（第一次执行lambda，第二次只执行这个lazyValue get（）的返回结果）
 
-    //可观察属性
+    //可观察属性Delegates.observable
     val user = UserModel()
     user.name = "first"
     user.name = "second"

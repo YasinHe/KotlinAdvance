@@ -92,11 +92,19 @@ infix fun List<HuMan>.fount(name:String){
         it.name == name
     }.forEach (::println)
     //  ::就是lambda的闭包，同理Math::max等效于(a, b)->Math.max(a, b),s::isEmpty等效于()->s.isEmpty()
-    //在java中使用一般是类名加方法名（称为方法引用）  Person::getName == person -> person.getName();
+    //在java中使用一般是类名加方法名（称为方法引用）  model.Person::getName == person -> person.getName();
     // () -> new HashMap<>();  ==  HashMap::new
 }
 
-//protected：只用于类和接口内 internal如下
+//protected： 和 private一样 + 在子类中可见
+
+/**
+ *
+一个 IntelliJ IDEA 模块；
+一个 Maven 项目；
+一个 Gradle 源集（例外是 test 源集可以访问 classtype.classtype.main 的 internal 声明）；
+一次 ＜kotlinc＞ Ant 任务执行所编译的一套文件。
+ */
 internal fun 同一模块访问修饰符(){
 
 }

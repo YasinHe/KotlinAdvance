@@ -81,13 +81,16 @@ fun main(args: Array<String>) {
         override operator fun invoke(x: Int): Int = TODO()
     }
     val intFunction: (Int) -> Int = IntTransformer()
-    val a = { i: Int -> i + 1 } // 推断出的类型是 (Int) -> Int
-
-    //带与不带接受者的函数类型非字面值可以互换，接受者可以代替第一个参数（(A, B) -> C 类型的值可以传给或赋值给期待 A.(B) -> C）
+    val a = {
+        i: Int -> i + 1
+    } // 推断出的类型是 (Int) -> Int
+    a.invoke(3)//这个结果应该是4
+    //带与不带接受者的函数类型非字面值可以互换，接受者可以代替第一个参数（ (A, B) -> C 类型的值可以传给或赋值给期待 A.(B) -> C ）
+    //再解释：意思就是下面的String.(Int) -> String 完全等于  （String，Int） -> String 传入一个string一个int返回一个{}返回值是string
     val repeat: String.(Int) -> String = {
         times ->
-        repeat(times)
-    }
+        this.repeat(times)//这里this可以省略，为了看值
+    }//看下面的s3
     var s:String = repeat("1",1)//"1"
     var s2:String = repeat.invoke("1",2)//"11"
     var s3:String = "1".repeat(3)//类扩展  "111"
@@ -102,8 +105,13 @@ fun main(args: Array<String>) {
      * lambda语法
      */
     //表达式总是括在花括号中,完整语法形式的参数声明放在花括号内,并有可选的类型标注,函数体跟在一个 -> 符号之后
+    //下面三行等价
     val sum = { x: Int, y: Int -> x + y }
     val sum2: (Int, Int) -> Int = { x, y -> x + y }
+    val sumx: Int.(Int) -> Int = { x -> x + this }
+    //下面两行等价
+    sumx(1,2)
+    1.sumx(2)
     //在 Kotlin 中有一个约定：如果函数的最后一个参数接受函数，
     // 那么作为相应参数传入的 lambda 表达式可以放在圆括号之外
     val product1 = items.fold(1) { acc, e -> acc * e }
@@ -121,19 +129,27 @@ fun main(args: Array<String>) {
     val sum4 = fun Int.(other: Int): Int = this + other
 
     //lambda调用Html
-    html {       // 带接收者的 lambda 由此开始
+    html ("https://www.baidu.com"){       // 带接收者的 lambda 由此开始
+        this
         body()   // 调用该接收者对象的一个方法
     }
 }
 
-class HTML {
+class HTML (url:String){
+    val urlAddress:String = url
     fun body() {
         println("body")
     }
 }
 
-fun html(init: HTML.() -> Unit): HTML {
-    val html = HTML()  // 创建接收者对象
-    html.init()        // 将该接收者对象传给该 lambda
+/**
+ * 这个函数接受一个名为 init 的参数，该参数本身就是一个函数。 该函数的类型是 HTML.() -> Unit，
+ * 它是一个 带接收者的函数类型 。 这意味着我们需要向函数传递一个 HTML 类型的实例（ 接收者 ），
+ * 并且我们可以在函数内部调用该实例的成员。 该接收者可以通过 this 关键字访问
+ */
+fun html(url:String , init: HTML.() -> Unit): HTML {
+    val html = HTML(url)  // 创建接收者对象
+    html.init()           // 将该接收者对象传给该 lambda
     return html
 }
+

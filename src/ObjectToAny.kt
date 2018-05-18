@@ -334,3 +334,22 @@ class Lateinit {
         println("isInitialized after assignment: " + this::lateinitVar.isInitialized)
     }
 }
+
+//类型智能转换
+fun demo(x: Any) {
+    if (x is String) {
+        print(x.length) // x 自动转换为字符串
+    }
+    // `||` 右侧的 x 自动转换为字符串
+    if (x !is String || x.length == 0) return
+
+    // `&&` 右侧的 x 自动转换为字符串
+    if (x is String && x.length > 0) {
+        print(x.length) // x 自动转换为字符串
+    }
+    when (x) {
+        is Int -> print(x + 1)
+        is String -> print(x.length + 1)
+        is IntArray -> print(x.sum())
+    }
+}

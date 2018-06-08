@@ -1,4 +1,3 @@
-import model.Person
 import model.WashMachine
 import kotlin.properties.Delegates
 

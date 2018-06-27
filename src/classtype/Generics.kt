@@ -14,7 +14,7 @@ interface Source<out T> {
 }
 
 fun demo(strs: Source<String>) {
-    val objects: Source<Any> = strs // 这个没问题，因为 T 是一个 out-参数
+    val objects: Source<Any> = strs // 这个没问题，因为 T 是一个 out-参数,如果没有out这里无法赋值
     // ……
 }
 
@@ -28,6 +28,13 @@ fun demo(x: Comparable<Number>) {
     // 因此，我们可以将 x 赋给类型为 classtype.Comparable <Double> 的变量
     val y: Comparable<Double> = x // OK！
 }
+
+interface ProductionConsumer<T> {
+    fun produce(): T
+    fun consume(item: T)
+}
 /**
- * //转换：消费者 in, 生产者 out!
+ * //转换：消费者 in（只写入而不可以被读取（相当于Java中 ? super T））----  消费指定泛型对象(子类泛型对象可以赋值给父类) fun consume(item: T)
+ * 生产者 out（只读取，相当于Java中? extends T）----  使用时机是在 泛型作为内部方法的返回(父类泛型对象可以赋值给子类) fun nextT(): T
+ * Invariant  兼顾in和out 可以同时存在的时候
  */

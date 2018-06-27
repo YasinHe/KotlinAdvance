@@ -1,5 +1,6 @@
 //对象表达式的使用
 //有时候，我们需要创建一个对某个类做了轻微改动的类的对象，而不用为之显式声明新的子类。 Java 用匿名内部类 处理这种情况
+//object关键字的三种作用：1.作为对象表达式（比如第14行） 2.作为对象字面量（第29行）  3.作为单例
 open class A(x: Int) {
     public open val y: Int = x
     public open var x1:Int = x

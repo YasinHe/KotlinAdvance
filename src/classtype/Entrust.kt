@@ -35,7 +35,7 @@ fun main(args: Array<String>) {
     Derived(b).print1()
     //重写的成员不会在委托对象的成员中调用 ，委托对象的成员只能访问其自身对接口成员实现
     println(Derived(b).message)
-    //这里打印结果是10 和 print2 最后message是Message of classtype.Derived
+    //这里打印结果是classtype.BaseImpl: x = 10 和 print2 最后message是Message of classtype.Derived
 
     //属性委托(重铸setter，getter)
     val e = Example()
@@ -45,20 +45,22 @@ fun main(args: Array<String>) {
     //延迟属性
     //lazy() 是接受一个 lambda 并返回一个 Lazy <T> 实例的函数，返回的实例可以作为实现延迟属性的委托：
     // 第一次调用 get() 会执行已传递给 lazy() 的 lambda 表达式并记录结果， 后续调用 get() 只是返回记录的结果
-    //lazy{} 只能用在val类型,比如封装延迟加载给view，返回泛型View，然后findViewById，这样bind的view是延迟到加载时才初始化
-
+    //lazy{} 只能用在val类型(var用lateinit),比如封装延迟加载给view，返回泛型View，然后findViewById，这样bind的view是延迟到加载时才初始化,如下
+    /**private val tv :TextView  by lazy(LazyThreadSafetyMode.NONE){
+        findViewById(R.id.tv) as TextView
+    }*/
     // lazy 属性的求值是同步锁的（synchronized）
     //下面传的这个值得意思是：如果初始化委托的同步锁不是必需的，这样多个线程可以同时执行
     val lazyValue: String by lazy(LazyThreadSafetyMode.PUBLICATION) {
         println("computed!")
         "Hello"//  等价于  return@lazy "Hello"
-
     }
+
     println(lazyValue)
     println(lazyValue)
     //打印结果 computed!  Hello  Hello（第一次执行lambda，第二次只执行这个lazyValue get（）的返回结果）
 
-    //可观察属性Delegates.observable
+    //可观察属性Delegates.observable(可以监听对象属性的改变)
     val user = UserModel()
     user.name = "first"
     user.name = "second"
@@ -68,6 +70,9 @@ fun main(args: Array<String>) {
         val name: String by map
         val age: Int     by map
     }
+    //下面"name" "age" 都是key
+    //value写的类型如果和上面age的Int类型不同，会报解析异常;
+    //如果名字和上面声明的名字不一样，会no such 找不到
     val user2 = User(mapOf(
             "name" to "John Doe",
             "age"  to 25

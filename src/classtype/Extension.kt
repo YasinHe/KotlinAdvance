@@ -15,6 +15,7 @@ fun MutableList<Int>.swap(index1: Int, index2: Int) {
  */
 fun main(args: Array<String>) {
     val l = mutableListOf(1, 2, 3, 9, 60, 54, 8, 21)
+    //下面这是个反向选择排序，每次找最小值放在最后面
     l.forEachIndexed { index, value ->
         //run方法的意思是：调用run函数块。返回值为函数块最后一行，或者指定return表达式
         run {
@@ -42,6 +43,7 @@ fun main(args: Array<String>) {
     class C {
         fun baz() { }
 
+        //为D新增扩展函数,作用域仅限该类C
         fun D.foo() {
             bar()   // 调用 D.bar
             baz()   // 调用 C.baz
@@ -53,7 +55,11 @@ fun main(args: Array<String>) {
         }
 
         fun caller(d: D) {
-            d.foo()   // 调用扩展函数
+            d.foo()   // 调用扩展函数,为D新增临时方法
+            d.foo2()
         }
     }
+
+    var c:C = C()
+    c.caller(D())//这里可以这么使用，foo和foo2不可以直接使用
 }

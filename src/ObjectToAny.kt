@@ -269,6 +269,37 @@ inline fun <T> check(lock: Lock, body: () -> T): T {
     }
 }
 
+//如果你只想被（作为参数）传给一个内联函数的 lamda 表达式中只有一些被内联，你可以用 noinline 修饰符标记一些函数参数（让内联函数的lambda参数不进行内联）
+inline fun foo(inlined: () -> Unit, noinline notInlined: () -> Unit) {
+    // ……
+}
+
+//非局部返回
+fun outterFun() {
+    innerFun {
+        //return  //错误，不支持直接return
+        //只支持通过标签，返回innerFun
+        return@innerFun
+    }
+    //如果是匿名或者具名函数，则支持
+    var f = fun(){
+        return
+    }
+}
+fun innerFun(a: () -> Unit) {}
+
+//crossinline 的作用是让被标记的lambda表达式不允许非局部返回（就是我们如果直接将lambda参数作为另一个函数的返回值，这种情况是不被允许的）
+interface TestInterface{
+    fun test(a:Int):Int
+}
+inline fun testInterface(crossinline t: (Int) -> Int): TestInterface = object : TestInterface {
+    override fun test(a: Int): Int = t.invoke(a)
+}
+//虽然testInterface方法是inline的，但是此处禁止直接return，因为其lambda参数使用了crossinline标记：
+//testInterface{
+//    return //错误
+//}
+
 fun foo() {
     listOf(1, 2, 3, 4, 5).forEach lit@{
         if (it == 3) return@lit // 局部返回到该 lambda 表达式的调用者，即 forEach 循环   @forEach代替@lit也可以

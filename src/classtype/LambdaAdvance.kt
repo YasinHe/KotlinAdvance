@@ -89,7 +89,7 @@ fun main(args: Array<String>) {
     //再解释：意思就是下面的String.(Int) -> String 完全等于  （String，Int） -> String 传入一个string一个int返回一个{}返回值是string
     val repeat: String.(Int) -> String = {
         times ->
-        this.repeat(times)//这里this可以省略，为了看值
+        this.repeat(times)//这里this可以省略，为了看值(这里的repeat是调用的string本身的重复api)
     }//看下面的s3
     var s:String = repeat("1",1)//"1"
     var s2:String = repeat.invoke("1",2)//"11"
@@ -99,7 +99,7 @@ fun main(args: Array<String>) {
         return f("hello", 3)
     }
     val result = runTransformation(repeat) // OK
-    println("result = $result")
+    println("result = $result")//hello重复三次
 
     /**
      * lambda语法
@@ -113,7 +113,7 @@ fun main(args: Array<String>) {
     sumx(1,2)
     1.sumx(2)
     //在 Kotlin 中有一个约定：如果函数的最后一个参数接受函数，
-    // 那么作为相应参数传入的 lambda 表达式可以放在圆括号之外
+    // 那么作为相应参数传入的 lambda 表达式可以放在圆括号之外(比如下面这样，1后面可以加个,然后把括号放最后，也可以直接括号{}在外)
     val product1 = items.fold(1) { acc, e -> acc * e }
     //如果表达式是唯一的参数，那么圆括号可以省略
     run { println("...") }
@@ -130,7 +130,7 @@ fun main(args: Array<String>) {
 
     //lambda调用Html
     html ("https://www.baidu.com"){       // 带接收者的 lambda 由此开始
-        this
+        println("$this--go")
         body()   // 调用该接收者对象的一个方法
     }
 }
@@ -143,13 +143,13 @@ class HTML (url:String){
 }
 
 /**
- * 这个函数接受一个名为 init 的参数，该参数本身就是一个函数。 该函数的类型是 HTML.() -> Unit，
+ * 这个函数接受一个名为 init 的参数，该参数本身就是一个函数。 该函数的类型是 HTML.() -> Unit,由html才能调用的没有参数函数，
  * 它是一个 带接收者的函数类型 。 这意味着我们需要向函数传递一个 HTML 类型的实例（ 接收者 ），
  * 并且我们可以在函数内部调用该实例的成员。 该接收者可以通过 this 关键字访问
  */
 fun html(url:String , init: HTML.() -> Unit): HTML {
     val html = HTML(url)  // 创建接收者对象
-    html.init()           // 将该接收者对象传给该 lambda
+    html.init()           // 将该接收者对象传给该 lambda，这一步就是调用括号里的方法
     return html
 }
 

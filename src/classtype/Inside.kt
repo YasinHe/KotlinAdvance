@@ -16,7 +16,7 @@ class Outer2{
     private lateinit var listener:OnClickListener
     inner class Inner {
         fun foo() = bar//没有这个引用  就无法访问bar
-        fun setListener(listener1:OnClickListener ){
+        fun setListener(listener1:OnClickListener){
             listener = listener1
         }
     }

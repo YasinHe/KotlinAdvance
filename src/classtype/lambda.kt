@@ -42,10 +42,10 @@ class ManyParameter(str: String,
 }
 
 //在函数内部，类型 T 的 vararg 参数的可见方式是作为 T 数组  就是说ts = Array<out T>
-//vararg只有一个参数可以标记为它，一般是最后一个
+//vararg只有一个参数可以标记为它，一般是最后一个相当于java的 T... values
 fun <T> asList(vararg ts: T): List<T> {
     val result = ArrayList<T>()
-    for (t in ts) // ts is an Array
+    for (t in ts) // ts is an Array,遍历ts的每个item t
         result.add(t)
     return result
 }

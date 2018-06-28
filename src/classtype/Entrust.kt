@@ -5,10 +5,12 @@ import kotlin.reflect.KProperty
 
 /**
  * 委托:另一个对象帮你做事情,比如安卓的adapter回传activity，处理事件，也是一种委托
+ * kotlin接口不能直接初始化参数，但是重写get可以相当于java8的default
  */
 interface Base {
     fun print()
     val message: String
+        get() = "init"
 }
 
 class BaseImpl(val x: Int) : Base {
@@ -46,9 +48,9 @@ fun main(args: Array<String>) {
     //lazy() 是接受一个 lambda 并返回一个 Lazy <T> 实例的函数，返回的实例可以作为实现延迟属性的委托：
     // 第一次调用 get() 会执行已传递给 lazy() 的 lambda 表达式并记录结果， 后续调用 get() 只是返回记录的结果
     //lazy{} 只能用在val类型(var用lateinit),比如封装延迟加载给view，返回泛型View，然后findViewById，这样bind的view是延迟到加载时才初始化,如下
-    /**private val tv :TextView  by lazy(LazyThreadSafetyMode.NONE){
-        findViewById(R.id.tv) as TextView
-    }*/
+    /**  private val tv :TextView  by lazy(LazyThreadSafetyMode.NONE){
+          findViewById(R.id.tv) as TextView
+         }    */
     // lazy 属性的求值是同步锁的（synchronized）
     //下面传的这个值得意思是：如果初始化委托的同步锁不是必需的，这样多个线程可以同时执行
     val lazyValue: String by lazy(LazyThreadSafetyMode.PUBLICATION) {
@@ -82,6 +84,11 @@ fun main(args: Array<String>) {
 }
 
 //--------------------------------------------------------------------属性委托-----------------------------------------------------------------------------------
+class Example {
+    //属性对应的 get()（和 set()）会被委托给它的 getValue() 和 setValue() 方法
+    var p: String by Delegate()
+}
+
 class Delegate {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
         return "$thisRef, thank you for delegating '${property.name}' to me!"
@@ -92,11 +99,7 @@ class Delegate {
     }
 }
 
-class Example {
-    //属性对应的 get()（和 set()）会被委托给它的 getValue() 和 setValue() 方法
-    var p: String by Delegate()
-}
-
+//--------------------------------------------------Delegate的意思是代表----------------------------------------------------------------------------------------------------
 
 class UserModel {
     //还可以使用vetoable()

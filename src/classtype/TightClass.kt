@@ -12,12 +12,12 @@ object NotANumber : Expr()
 //使用密封类的关键好处在于使用 when 表达式 的时候，如果能够验证语句覆盖了所有情况，就不需要为该语句再添加一个 else 子句了
 fun eval(expr: Expr): Double = when(expr) {
     is Const -> expr.number
-    is Sum -> eval(expr.e1) + eval(expr.e2)
+    is Sum -> eval(expr.e1) + eval(expr.e2)//这里等于递归自己实现相加
     NotANumber -> Double.NaN
 // 不再需要 `else` 子句，因为我们已经覆盖了所有的情况
 }
 
-//实例2-------------------------------------------------------------------------------------------------------------
+//实例2--------------------密封类作为声明时，但凡使用该声明的都认为是同一组织的；密封类作为同一类中使用时，when必须写出所有可能--------------------------------
 sealed class Operation {
     class Add(val value: Int) : Operation()
     class Substract(val value: Int) : Operation()
@@ -37,5 +37,9 @@ fun execute(x: Int, op: Operation) = when (op) {
 //    classtype.Operation.Increment -> x + 1
 //    classtype.Operation.Decrement -> x - 1
     else -> ""
+}
+
+fun main(args: Array<String>) {
+    eval(Sum(Const(5.0),Const(5.0)))
 }
 

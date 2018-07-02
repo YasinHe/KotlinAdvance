@@ -14,6 +14,7 @@ import sum
  */
 //Collection<T>.fold是扩展函数，首先参数 combine 具有函数类型 (R, T) -> R，所以fold接受一个函数作为参数
 //这个函数接受类型为R和T，并且返回一个R类型的值，在for循环内部调用这个函数，然后返回赋值
+//泛型类型定义与java一样，类型参数声明在函数名前
 fun <T, R> Collection<T>.fold(
         initial: R,
         combine:(acc: R, nextElement: T) -> R
@@ -84,7 +85,7 @@ fun main(args: Array<String>) {
     val a = {
         i: Int -> i + 1
     } // 推断出的类型是 (Int) -> Int
-    a.invoke(3)//这个结果应该是4
+    a.invoke(3)//invoke方法的存在是因为lambda是个对象，让对象像函数一样调用，这个结果应该是4
     //带与不带接受者的函数类型非字面值可以互换，接受者可以代替第一个参数（ (A, B) -> C 类型的值可以传给或赋值给期待 A.(B) -> C ）
     //再解释：意思就是下面的String.(Int) -> String 完全等于  （String，Int） -> String 传入一个string一个int返回一个{}返回值是string
     val repeat: String.(Int) -> String = {

@@ -1,6 +1,6 @@
 //kotlin单例
+//Singleton.getInstance()
 class Singleton private constructor() {
-    public var value: Singleton? = null
     private object mHolder {
         val INSTANCE = Singleton()
     }

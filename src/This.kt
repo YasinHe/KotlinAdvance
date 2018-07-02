@@ -1,7 +1,7 @@
 fun main(args: Array<String>) {
 
     class A { // 隐式标签 @A
-        inner class B { // 隐式标签 @B
+        inner class B { // 隐式标签 @B(内部类)
             fun Int.foo() { // 隐式标签 @foo
                 val a = this@A // A 的 this
                 val b = this@B // B 的 this

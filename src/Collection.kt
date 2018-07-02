@@ -1,5 +1,6 @@
 /**
- * Kotlin 的 List<out T> 类型是一个提供只读操作如 size、get等的接口。和 Java 类似，它继承自 Collection<T> 进而继承自 Iterable<T>
+ * Kotlin 的 List<out T> 类型是一个提供只读操作如 size、get等的接口。
+ * 和 Java 类似，它继承自 Collection<T> 进而继承自 Iterable<T>
  */
 fun main(args: Array<String>) {
     //可变list
@@ -12,7 +13,7 @@ fun main(args: Array<String>) {
     val strings = hashSetOf("a", "b", "c", "c")
     assert(strings.size == 3)
     //不可变list,返回的实现是 array list
-    val items = listOf(1, 2, 3,4)
+    val items = listOf(1, 2, 3, 4)
     //快照保存
     val snap:Snap = Snap()
     snap.items.add("1")

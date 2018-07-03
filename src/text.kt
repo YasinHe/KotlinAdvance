@@ -38,6 +38,7 @@ fun main(args: Array<String>) {
 
     //类型后面  加?  表示可为空（不然传参null会报错）
     var age: String? = "23"
+//    age = null//如果上面不是可为空，这里传null是不能编译的
     //抛出空指针异常，非空断言运算符（!!）将任何值转换为非空类型，若该值为空则抛出异常
     val ages = age!!.toInt()
     //不做处理返回 null
@@ -51,7 +52,7 @@ fun main(args: Array<String>) {
     16 进制以 0x 开头：0x0F
     2 进制以 0b 开头：0b00001011
     注意：8进制不支持
-    Doubles 默认写法: 123.5, 123.5e10
+    Doubles 默认写法: 123.5, 123.5e10   科学计数法e10 = 10的10次方
     Floats 使用 f 或者 F 后缀：123.5f
      */
     val double = 135.5e10
@@ -114,7 +115,7 @@ fun main(args: Array<String>) {
     //[1,2,3]
     val ass = arrayOf(1, 2, 3)
     //[0,2,4]
-    val bs = Array(3, { i -> (i * 2) })
+    val bs = Array(3) { i -> i * 2 }
     //读取数组内容
     println(ass[0])    // 输出结果：1
     println(bs[1])    // 输出结果：2
@@ -262,7 +263,7 @@ fun whileFuncation(){
         if (i>5) break   // i 为 6 时 跳出循环
     }
 
-    //遇到标签就结束
+    //遇到标签就结束(只跳出一层，第二层可以继续进入，continue)
     val ints = arrayOf(0,1,2,3)
     ints.forEach lit@ {
         if (it == 0) return@lit
@@ -273,10 +274,10 @@ fun whileFuncation(){
         print(it)
     }
     ints.forEach {
-        //        if (it == 0) return//这里是完全跳出的
+//        if (it == 0) return//这里是完全跳出的（整个外面函数）
 //        print(it)
     }
-    //这个和下面那个是等价的，其实一个匿名，一个不是匿名
+    //这个和下面那个是等价的，其实一个匿名，一个不是匿名(与上面的不同，因为return的是内部方法)
     ints.forEach {
         fun go(k: Int) {
             if (k == 0) return//只跳出一次，因为这是一个匿名方法，所以返回return的是方法

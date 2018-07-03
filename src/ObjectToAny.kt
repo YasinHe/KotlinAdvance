@@ -3,12 +3,13 @@ import model.Person
 import java.util.concurrent.locks.Lock
 
 //函数式闭包(方法的返回值可以是一个方法，并且规定该方法的返回值)
-fun funcation():()->String{//返回一个函数，并且函数的返回值需要是String
+//使用的时候以方法为对象，对方法对象进行传值调用
+fun funcation(s:String):(y:Int)->String{//返回一个函数，并且函数的返回值需要是String
     var x = 0
 //    ++x
-    return fun():String{
+    return fun(y:Int):String{
         ++x
-        println(x)
+        println(x+y)
         return x.toString()
     }
 }
@@ -70,6 +71,10 @@ interface IMan {
 }
 class Man(name:String):HuMan(name),IMan{
     override val prop: Int = 29
+    override var propertyWithImplementation: String
+        get() = super.propertyWithImplementation
+        set(value) {}
+
     override fun keke() {
         propertyWithImplementation
         propertyWithImplementation = "Ace"
@@ -207,10 +212,10 @@ fun main(args: Array<String>) {
     // java函数里不能声明函数，也不能返回函数，函数也不能作为参数传给另一个函数
     //函数本身没有状态也没有封装能力，但是通过函数闭包，他的内部参数得以保留状态
     //高阶函数：参数或者返回值为函数的函数
-    var funcationTest = funcation()
-    funcationTest()
-    funcationTest()
-    funcationTest()
+    var funcationTest = funcation("")
+    funcationTest(1)
+    funcationTest(2)
+    funcationTest(3)
     whileFuncation()//不是现式写出是private都可以直接调用
 
     //单例
@@ -274,6 +279,7 @@ inline fun foo(inlined: () -> Unit, noinline notInlined: () -> Unit) {
     // ……
 }
 
+fun innerFun(a: () -> Unit) {}
 //非局部返回
 fun outterFun() {
     innerFun {
@@ -286,7 +292,6 @@ fun outterFun() {
         return
     }
 }
-fun innerFun(a: () -> Unit) {}
 
 //crossinline 的作用是让被标记的lambda表达式不允许非局部返回（就是我们如果直接将lambda参数作为另一个函数的返回值，这种情况是不被允许的）
 interface TestInterface{
@@ -360,7 +365,7 @@ class Bar2 : Foo() {
 class Lateinit {
     lateinit var lateinitVar: String
     fun initializationLogic() {
-        println("isInitialized before assignment: " + this::lateinitVar.isInitialized)
+        println("isInitialized before assignment: " + this::lateinitVar.isInitialized)//是否已初始化
         lateinitVar = "value"
         println("isInitialized after assignment: " + this::lateinitVar.isInitialized)
     }

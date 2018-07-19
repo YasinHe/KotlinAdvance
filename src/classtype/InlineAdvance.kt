@@ -9,8 +9,10 @@ import java.util.concurrent.locks.Lock
  * 而内联的lambda可以消除他们的影响
  */
 fun main(args: Array<String>) {
+//    doSomething()//这里就报错，因为挂起函数不能在非协程的普通函数中使用
     async{
-        //doSth,这里挂起一个协程，一直到计算完成返回结果
+        //doSth,这里挂起一个协程，一直到计算完成返回结果，协程将复杂异步操作放入底层库中,程序逻辑可顺序表达,以此简化异步编程无需上下文切换或涉及OS
+        doSomething()
     }
 }
 

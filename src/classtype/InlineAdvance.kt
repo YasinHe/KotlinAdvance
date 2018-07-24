@@ -1,7 +1,5 @@
 package classtype
 
-import java.util.concurrent.locks.Lock
-
 /**
  * 为什么使用内联？
  * 使用高阶函数都会带来性能损失，因为每个函数都是对象，并且会捕获一个闭包

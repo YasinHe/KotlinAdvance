@@ -127,6 +127,13 @@ infix fun List<HuMan>.fount(name:String){
     //  ::就是lambda的闭包，同理Math::max等效于(a, b)->Math.max(a, b),s::isEmpty等效于()->s.isEmpty()
     //在java中使用一般是类名加方法名（称为方法引用）  model.Person::getName == person -> person.getName();
     // () -> new HashMap<>();  ==  HashMap::new
+    /**
+     * ::   表示把一个方法当做一个参数，传递到另一个方法中进行使用，通俗的来讲就是引用一个方法
+     * 1.  println(lock("param1", "param2", ::getResult))  他调用了一个方法->  fun getResult(str1: String, str2: String): String = "result is {$str1 , $str2}"
+     * 2. 在 Class 中的某个方法中使用双冒号调用当前 Class 的内部方法时调动方式   println(list.filter(this::isOdd))  isOdd是遍历对象的方法
+     * 3. 需要调用其他 Class 中的某一个方法是    var d = Test()   println(lock("param1", "param2", d::getResult)) 调用了d的某个方法
+     */
+
 }
 
 //protected：只用于类和接口内 internal如下

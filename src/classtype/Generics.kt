@@ -19,7 +19,7 @@ fun demo(strs: Source<String>) {
 }
 
 interface Comparable<in T> {
-    //Operator overloading 操作重载符
+    //Operator overloading 操作重载符,重载符的意思就是可以用符号对方法直接连接而不需要在括号里调用参数
     operator fun compareTo(other: T): Int
 }
 

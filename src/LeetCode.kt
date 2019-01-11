@@ -40,17 +40,77 @@ fun main(args: Array<String>) {
     listNode7.next = listNode8
 //    addTwoNumbers(listNode1,listNode4)//708
 
-    deleteDuplicates(listNode4)
+//    deleteDuplicates(listNode4)
+
+    var treeNode = TreeNode(1)
+    var treeNode2 = TreeNode(2)
+    treeNode.left = treeNode2
+    treeNode.right = null
+    var treeNode3 = TreeNode(1)
+    var treeNode4 = TreeNode(2)
+    treeNode3.left = treeNode4
+//    val boolean = isSameTree(treeNode,treeNode3)
+
+    merge(intArrayOf(0,0,0,0,0),
+            0,
+            intArrayOf(1,2,3,4,5),
+            5)//[1,2,2,3,5,6]
 
       println(result)
 }
 
-fun isSameTree(p: TreeNode?, q: TreeNode?): Boolean {
-
+fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int): Unit {
+    if(nums2.isEmpty()){
+        return
+    }
+    var indexAll = m+n-1
+    var index1 = m
+    var index2 = n
+    if(indexAll==0&&m==0){
+        if(nums1[0]<nums2[0]){
+            nums1[0] = nums2[0]
+        }
+    }
+    while(indexAll>=0){
+        if(index1<=0){//说明m已经遍历结束了
+            nums1[indexAll] = nums2[index2-1]
+            index2--
+        }else if(index2<=0){//说明n已经遍历结束
+            nums1[indexAll] = nums1[index1-1]
+            index1--
+        }else{
+            if(nums1[index1-1]<=nums2[index2-1]){
+                nums1[indexAll] = nums2[index2-1]
+                index2--
+            } else{
+                nums1[indexAll] = nums1[index1-1]
+                index1--
+            }
+        }
+        indexAll--
+    }
+    if(indexAll==0){
+        if(nums1[0]>nums2[0]){
+            nums1[0] = nums2[0]
+        }
+    }
+    System.out.print("ok")
 }
 
-fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int): Unit {
+fun isSameTree(p: TreeNode?, q: TreeNode?): Boolean {
+    if(p==null&&q==null) return true
+    if(p==null||q==null) return false
+    return traverse(p)==traverse(q)
+}
 
+tailrec fun traverse(tree:TreeNode?):String{
+    if(tree==null) return "null"
+    if(tree.`val`==null) return "null"
+    var stringBuilder = StringBuilder()
+    stringBuilder.append(if(tree!=null)tree.`val`.toString() else "null")
+    stringBuilder.append(traverse(tree.left))
+    stringBuilder.append(traverse(tree.right))
+    return stringBuilder.toString()
 }
 
 fun deleteDuplicates(head: ListNode?): ListNode? {

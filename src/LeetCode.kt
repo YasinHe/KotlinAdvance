@@ -1,4 +1,5 @@
 import java.util.*
+import kotlin.math.max
 
 fun main(args: Array<String>) {
     var result = 0
@@ -49,14 +50,54 @@ fun main(args: Array<String>) {
     var treeNode3 = TreeNode(1)
     var treeNode4 = TreeNode(2)
     treeNode3.left = treeNode4
+
 //    val boolean = isSameTree(treeNode,treeNode3)
 
-    merge(intArrayOf(0,0,0,0,0),
-            0,
-            intArrayOf(1,2,3,4,5),
-            5)//[1,2,2,3,5,6]
+//    merge(intArrayOf(0,0,0,0,0),
+//            0,
+//            intArrayOf(1,2,3,4,5),
+//            5)//[1,2,2,3,5,6]
+
+//    val boolean = isSymmetric(treeNode)
+
+//    result = maxDepth(treeNode)
+
+    levelOrderBottom(treeNode)
 
       println(result)
+}
+
+fun levelOrderBottom(root: TreeNode?): List<List<Int>> {
+
+}
+
+fun maxDepth(root: TreeNode?): Int {
+    if(root==null) return 0
+    //求二叉树的最大深度也就是最远的叶子节点+1
+    var leftDeep = maxDepth(root.left)+1
+    var rightDeep = maxDepth(root.right)+1
+    return if (leftDeep>rightDeep) leftDeep else rightDeep
+}
+
+fun isSymmetric(root: TreeNode?): Boolean {
+    //思路是把二叉树分为左子树和右子树，左子树分别做先根遍历（但是一个根左右  一个根右左）
+    if(root==null) return true
+    return traverse2(root.left,true)==traverse2(root.right,false)
+}
+
+tailrec fun traverse2(tree:TreeNode?,left: Boolean):String{
+    if(tree==null) return "null"
+    if(tree.`val`==null) return "null"
+    var stringBuilder = StringBuilder()
+    stringBuilder.append(if(tree!=null)tree.`val`.toString() else "null")
+    if(left) {
+        stringBuilder.append(traverse2(tree.left,left))
+        stringBuilder.append(traverse2(tree.right,left))
+    }else{
+        stringBuilder.append(traverse2(tree.right,left))
+        stringBuilder.append(traverse2(tree.left,left))
+    }
+    return stringBuilder.toString()
 }
 
 fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int): Unit {

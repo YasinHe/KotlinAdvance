@@ -63,9 +63,22 @@ fun main(args: Array<String>) {
 
 //    levelOrderBottom(treeNode)
 
-    val data = sortedArrayToBST(intArrayOf(0,1,2,3,4,5))
+//    val data = sortedArrayToBST(intArrayOf(0,1,2,3,4,5))
+
+    isBalanced(treeNode)
 
       println(result)
+}
+
+fun isBalanced(root: TreeNode?): Boolean {
+    //判断一颗二叉树是否平衡，也就是所有的左右子树的高低差不能大于1
+    if(root==null) return true
+    var dValue = maxDepth(root.left) - maxDepth(root.right)
+    if ( (dValue < -1) || ( dValue > 1)){
+        return false
+    } else {
+        return (isBalanced(root.left) && isBalanced(root.right))
+    }
 }
 
 fun sortedArrayToBST(nums: IntArray): TreeNode? {

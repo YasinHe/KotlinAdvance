@@ -1,5 +1,4 @@
 import java.util.*
-import kotlin.math.max
 
 fun main(args: Array<String>) {
     var result = 0
@@ -68,7 +67,33 @@ fun main(args: Array<String>) {
 }
 
 fun levelOrderBottom(root: TreeNode?): List<List<Int>> {
-
+    var result: MutableList<List<Int>> = mutableListOf()
+    if(root==null){
+        return result
+    }
+    //接下来对左右结点下手
+    var list:MutableList<TreeNode> = mutableListOf()
+    list.add(root)
+    var temp: MutableList<Int> = mutableListOf()
+    while (!list.isEmpty()){
+        var size = list.size
+        for(index in 0 until size){
+            val treeNode = list.get(index)
+            temp.add(treeNode.`val`)
+            if(treeNode.left!=null){
+                list.add(treeNode.left!!)
+            }
+            if(treeNode.right!=null){
+                list.add(treeNode.right!!)
+            }
+        }
+        for(index in 0 until size){
+            list.removeAt(0)
+        }
+        result.add(temp)
+        temp = mutableListOf()
+    }
+    return result.reversed().toList()
 }
 
 fun maxDepth(root: TreeNode?): Int {

@@ -61,9 +61,25 @@ fun main(args: Array<String>) {
 
 //    result = maxDepth(treeNode)
 
-    levelOrderBottom(treeNode)
+//    levelOrderBottom(treeNode)
+
+    val data = sortedArrayToBST(intArrayOf(0,1,2,3,4,5))
 
       println(result)
+}
+
+fun sortedArrayToBST(nums: IntArray): TreeNode? {
+    //这题因为是排序好的数组，而且要求平衡，那就是从中间取值，两边作为左右子树 左右子树再取中间为 根节点的左右节点
+    if(nums.isEmpty()){
+        return null
+    }
+    if(nums.size==1){
+        return TreeNode(nums[0])
+    }
+    var treeNode:TreeNode = TreeNode(nums[nums.size/2])
+    treeNode.left = sortedArrayToBST(nums.copyOfRange(0,nums.size/2))
+    treeNode.right = sortedArrayToBST(nums.copyOfRange(if(nums.size==2&&nums.size/2==1) 2 else nums.size/2+1,nums.size))
+    return treeNode
 }
 
 fun levelOrderBottom(root: TreeNode?): List<List<Int>> {

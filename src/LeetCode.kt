@@ -1,3 +1,4 @@
+import classtype.OnClickListener
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -75,9 +76,9 @@ fun main(args: Array<String>) {
 }
 
 fun hasPathSum(root: TreeNode?, sum: Int): Boolean {
-    var result = false
-
-    return result
+    if(root==null) return false
+    if(root.left==null&&root.right==null&&root.`val`==sum) return true
+    return hasPathSum(root.left,sum-root.`val`)||hasPathSum(root.right,sum-root.`val`)
 }
 
 fun minDepth(root: TreeNode?): Int {

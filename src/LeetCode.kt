@@ -65,9 +65,28 @@ fun main(args: Array<String>) {
 
 //    val data = sortedArrayToBST(intArrayOf(0,1,2,3,4,5))
 
-    isBalanced(treeNode)
+//    isBalanced(treeNode)
+
+//    minDepth(treeNode3)
+
+    hasPathSum(treeNode,3)
 
       println(result)
+}
+
+fun hasPathSum(root: TreeNode?, sum: Int): Boolean {
+    var result = false
+
+    return result
+}
+
+fun minDepth(root: TreeNode?): Int {
+    //求树的最小深度，就是找到一个没有孩子的叶子结点，这个结点深度最小
+    if(root==null) return 0
+    if(root.left==null&&root.right==null) return 1
+    var leftDeep = if(root.left==null) 0 else minDepth(root.left)+1
+    var rightDeep = if(root.right==null) 0 else minDepth(root.right)+1
+    return if(leftDeep==0) rightDeep else if(rightDeep==0) leftDeep else if (leftDeep>rightDeep) rightDeep else leftDeep
 }
 
 fun isBalanced(root: TreeNode?): Boolean {
@@ -125,7 +144,7 @@ fun levelOrderBottom(root: TreeNode?): List<List<Int>> {
     return result.reversed().toList()
 }
 
-fun maxDepth(root: TreeNode?): Int {
+tailrec fun maxDepth(root: TreeNode?): Int {
     if(root==null) return 0
     //求二叉树的最大深度也就是最远的叶子节点+1
     var leftDeep = maxDepth(root.left)+1

@@ -1,5 +1,8 @@
 import classtype.OnClickListener
 import java.util.*
+import java.util.ArrayList
+
+
 
 fun main(args: Array<String>) {
     var result = 0
@@ -70,9 +73,52 @@ fun main(args: Array<String>) {
 
 //    minDepth(treeNode3)
 
-    hasPathSum(treeNode,3)
+//    hasPathSum(treeNode,3)
+
+    generate(5)
+
+    maxProfit(intArrayOf(7,1,5,3,6,4))
 
       println(result)
+}
+
+fun maxProfit(prices: IntArray): Int {
+    //这题要计算最大利润，前天买后面卖，只要不超过数组长度天数，次数不限
+
+    return 0
+}
+
+fun generate(numRows: Int): List<List<Int>> {
+    //杨辉三角问题
+    var result:MutableList<List<Int>> = mutableListOf<List<Int>>()
+    if(numRows==0) return result
+    var temp:MutableList<Int> = mutableListOf<Int>()
+
+    if(numRows>=1){
+        temp.add(1)
+        result.add(temp)
+    }
+    if(numRows>=2){
+        temp = mutableListOf<Int>()
+        temp.add(1)
+        temp.add(1)
+        result.add(temp)
+    }
+    //从第三行开始安排
+    if(numRows>=3){
+        for(index in 3..numRows){
+            temp = mutableListOf<Int>()
+            var last = result[index-2]
+            temp.add(1)
+            //第三排安排一个  第四排两个  也就是2到 排-1个
+            for(loop in 2..index-1){
+                temp.add(last[loop-2]+last[loop-1])
+            }
+            temp.add(1)
+            result.add(temp)
+        }
+    }
+    return result
 }
 
 fun hasPathSum(root: TreeNode?, sum: Int): Boolean {

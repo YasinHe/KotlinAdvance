@@ -75,17 +75,51 @@ fun main(args: Array<String>) {
 
 //    hasPathSum(treeNode,3)
 
-    generate(5)
+//    generate(5)
 
-    maxProfit(intArrayOf(7,1,5,3,6,4))
+//    maxProfit(intArrayOf(7,1,5,3,6,4))
+
+    maxProfit2(intArrayOf(7,1,5,3,6,4))
 
       println(result)
 }
 
+fun maxProfit2(prices: IntArray): Int {
+    //可以多次买多次卖，那就一直倒卖就行
+    var max = 0
+    var len = prices.size
+    for(i in 1 until len){
+        if(prices[i]>prices[i-1]){//第二天比第一天高价
+            max+=prices[i]-prices[i-1]
+        }
+    }
+    return max
+}
+
 fun maxProfit(prices: IntArray): Int {
     //这题要计算最大利润，前天买后面卖，只要不超过数组长度天数，次数不限
+    //这个问题思路应该跟海盗分钱问题类似，属于从后往前思考，倒数第二天跟倒数第一天比能不能买卖
+    //以例题来说，倒数第二天想，我今天一定不能买，第二天要跌，如果我手上还有今天必须全卖了（一定卖）
+    //倒数第三天心想，我今天可以买，反正起码倒数第二天比我大，倒数第二天肯定能涨（一定买）
+    //倒数第四天，明天肯定是不能卖，我今天卖了算了或者观望（得知道后面还有没有比我大的，大多少有没有比明天差值大）
+    //倒数第二天心想，明天大涨，我今天一定要多买（一定买）
+    //第一天心想，我今天可以买可以不买（我的依据得是后面有没有比我大的）
 
-    return 0
+    //这题就是求最大差值(得找到一个最小值和一个最大值，要求最小值在最大值前边)
+    val len = prices.size
+    if (prices.isEmpty()) {
+        return 0
+    }
+    var min = prices[0]
+    var maxPro = 0
+    for (i in 1 until len) {
+        if (prices[i] < min) {
+            min = prices[i]
+        } else {
+            maxPro = Math.max(prices[i] - min, maxPro)
+        }
+    }
+    return maxPro
 }
 
 fun generate(numRows: Int): List<List<Int>> {

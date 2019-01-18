@@ -79,9 +79,39 @@ fun main(args: Array<String>) {
 
 //    maxProfit(intArrayOf(7,1,5,3,6,4))
 
-    maxProfit2(intArrayOf(7,1,5,3,6,4))
+//    maxProfit2(intArrayOf(7,1,5,3,6,4))
 
+    isPalindrome("A man, a plan, a canal: Panama")
+
+    singleNumber(intArrayOf(4,1,2,1,2))
       println(result)
+}
+
+fun singleNumber(nums: IntArray): Int {
+    if(nums.size==1) return nums[0]
+    var map = mutableMapOf<Int,Int>()
+    for(index in 0 until nums.size){
+        if(map.containsKey(nums[index])) {
+            map[nums[index]] = map[nums[index]]!! + 1
+        }else{
+            map[nums[index]] = 1
+        }
+    }
+    var result:Int = 0
+    val entry= map.filter {
+        it.value==1
+    }
+    for ((k,v) in entry){
+        result = k
+    }
+    return result
+}
+
+fun isPalindrome(s: String): Boolean {
+    //判断字符串除去空格，符号之外是否为回文，回文问题
+    //回文本身栈进栈出或者反转字符串都可以，但是这里问题要避开符号空格，以及不区分大小写
+
+    return false
 }
 
 fun maxProfit2(prices: IntArray): Int {

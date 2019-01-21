@@ -1,11 +1,9 @@
-import classtype.OnClickListener
 import java.util.*
-import java.util.ArrayList
-
 
 
 fun main(args: Array<String>) {
     var result = 0
+    var result2 = false
 //    reverse(1534236469)
 
 //    longestCommonPrefix(arrayOf("babb","caa"))//"flower","flow","flight"   "a","a"   "ca","a"   "c","acc","ccc"  "babb","caa"
@@ -69,11 +67,11 @@ fun main(args: Array<String>) {
 
 //    val data = sortedArrayToBST(intArrayOf(0,1,2,3,4,5))
 
-//    isBalanced(treeNode)
+//    result2 = isBalanced(treeNode)
 
 //    minDepth(treeNode3)
 
-//    hasPathSum(treeNode,3)
+//    result2 = hasPathSum(treeNode,3)
 
 //    generate(5)
 
@@ -81,10 +79,11 @@ fun main(args: Array<String>) {
 
 //    maxProfit2(intArrayOf(7,1,5,3,6,4))
 
-    isPalindrome("A man, a plan, a canal: Panama")
+    result2 = isPalindrome("A man, a plan, a canal: Panama")// .,   A man, a plan, a canal: Panama
 
-    singleNumber(intArrayOf(4,1,2,1,2))
-      println(result)
+//    singleNumber(intArrayOf(4,1,2,1,2))
+    println(result)
+    println(result2)
 }
 
 fun singleNumber(nums: IntArray): Int {
@@ -110,8 +109,40 @@ fun singleNumber(nums: IntArray): Int {
 fun isPalindrome(s: String): Boolean {
     //判断字符串除去空格，符号之外是否为回文，回文问题
     //回文本身栈进栈出或者反转字符串都可以，但是这里问题要避开符号空格，以及不区分大小写
-
-    return false
+    //其实这题做一个循环，分别从前往后从后往前找就行
+    //首先chatAt是不是属于字母数字  然后字母大小写转换
+    var chars = s.toCharArray()
+    var head = 0
+    var end = s.length-1
+    while (head<end){
+        var oneChar = chars[head]
+        var one = oneChar.toInt()
+        while (head<=end && !(one in 48..57||one in 65..90||one in 97..122)){
+            head++
+            if(head>chars.size-1) {
+                return true
+            }
+            oneChar = chars[head]
+            one = oneChar.toInt()
+        }
+        var endChar = chars[end]
+        var two = endChar.toInt()
+        while (head<=end && !(two in 48..57||two in 65..90||two in 97..122)){
+            end--
+            if(end<0) {
+                return true
+            }
+            endChar = chars[end]
+            two = endChar.toInt()
+        }
+        //对比两个char，要求无视大小写
+        if(oneChar.toLowerCase()!=endChar.toLowerCase()){
+            return false
+        }
+        head++
+        end--
+    }
+    return true
 }
 
 fun maxProfit2(prices: IntArray): Int {

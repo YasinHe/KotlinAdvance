@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 
 //    strStr("a","a")
 
-//    result = searchInsert(intArrayOf(1,3,4,5,6,10), 1)
+//    result = searchInsert(intArrayOf(1,3,4,5,6,10),1)
 
 //    result = maxSubArray(intArrayOf(-2,1,-3,4,-1,2,1,-5,4))
 
@@ -79,11 +79,70 @@ fun main(args: Array<String>) {
 
 //    maxProfit2(intArrayOf(7,1,5,3,6,4))
 
-    result2 = isPalindrome("A man, a plan, a canal: Panama")// .,   A man, a plan, a canal: Panama
+//    result2 = isPalindrome("A man, a plan, a canal: Panama")// .,   A man, a plan, a canal: Panama
 
 //    singleNumber(intArrayOf(4,1,2,1,2))
+
+    var minStack = MinStack()
+    minStack.push(-2)
+    minStack.push(0)
+    minStack.push(-3)
+    minStack.getMin()//--> 返回 -3.
+    minStack.pop()
+    minStack.top()//--> 返回 0.
+    minStack.getMin()//--> 返回 -2.
+
+    twoSum(intArrayOf(-1,0),-1)//输出 [1,2]
     println(result)
     println(result2)
+}
+
+//实现一个栈不难，怎么让他为O（1）
+class MinStack {
+    /** initialize your data structure here. */
+    fun push(x: Int) {
+
+    }
+    fun pop() {
+
+    }
+    fun top(): Int {
+        return 0
+    }
+    fun getMin(): Int {
+        return 0
+    }
+}
+
+fun twoSum(numbers: IntArray, target: Int): IntArray {
+    //顺序排列的数组，两数字之和为target，输出两个下标 下标最小是1，x2必须小于x1
+    var result = mutableListOf<Int>()
+    //如果仅仅只有两个数，那直接做加法
+    if(numbers.size==2){
+        if(numbers[0]+numbers[1]==target){
+            result.add(1)
+            result.add(2)
+            return result.toIntArray()
+        }else{
+            return result.toIntArray()
+        }
+    }
+    //如果数组里面有元素已经比target大了，那肯定是不用看了，把比target小的元素集合在一起先
+    var newNumber = numbers.filter { it<=target }
+    newNumber = numbers.asList()
+    //接下来循环两个数之和？
+    for(index1 in 0 until newNumber.size){
+        var index2 = (index1+1)
+        while (index2<newNumber.size){
+            if(newNumber[index1]+newNumber[index2]==target){
+                result.add(index1+1)
+                result.add(index2+1)
+                return result.toIntArray()
+            }
+            index2++
+        }
+    }
+    return result.toIntArray()
 }
 
 fun singleNumber(nums: IntArray): Int {

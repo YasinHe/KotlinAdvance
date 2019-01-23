@@ -92,9 +92,26 @@ fun main(args: Array<String>) {
     minStack.top()//--> 返回 0.
     minStack.getMin()//--> 返回 -2.
 
-    twoSum(intArrayOf(-1,0),-1)//输出 [1,2]
+//    twoSum(intArrayOf(-1,0),-1)//输出 [1,2]
+
+    convertToTitle(701)
+
     println(result)
     println(result2)
+}
+
+fun convertToTitle(n: Int): String {
+    //求Excel列名
+    if(n==0) return ""
+    var size = n
+    //a-z 是1-26  aa是27 等于26的平方+1 才是aaa，首先判断有几位也就是26的多少次方
+    var result = ""
+    while (size > 0) {
+        val s = ((size - 1)%26 + 65).toChar()
+        result = s + result
+        size = (size - 1) / 26
+    }
+    return result
 }
 
 //实现一个栈不难，怎么让他为O（1）

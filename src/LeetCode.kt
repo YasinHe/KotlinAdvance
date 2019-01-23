@@ -94,10 +94,30 @@ fun main(args: Array<String>) {
 
 //    twoSum(intArrayOf(-1,0),-1)//输出 [1,2]
 
-    convertToTitle(701)
+//    convertToTitle(701)
+
+    majorityElement(intArrayOf(2,2,1,1,1,2,2))
 
     println(result)
     println(result2)
+}
+
+fun majorityElement(nums: IntArray): Int {
+    //求众数，求一个数组中有个数字重复大于 length/2
+    //思路如下，如果一个数他在里面数量是总数一半以上，那么做一个计数器，这个计数器++ -- 最后只要大于0那么就是众数
+    var value = 0
+    var count = 0
+    for(index in 0 until nums.size){
+        if(count==0){
+            value = nums[index]
+            count++
+        }else if(value==nums[index]){
+            count++
+        }else{
+            count--
+        }
+    }
+    return value
 }
 
 fun convertToTitle(n: Int): String {

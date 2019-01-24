@@ -96,10 +96,74 @@ fun main(args: Array<String>) {
 
 //    convertToTitle(701)
 
-    majorityElement(intArrayOf(2,2,1,1,1,2,2))
+//    majorityElement(intArrayOf(2,2,1,1,1,2,2))
+
+//    titleToNumber("AB")
+
+//    trailingZeroes(5)
+
+//    rotate(intArrayOf(1,2,3,4,5,6,7),3)
+
+    rob(intArrayOf(1,2,3,1))
 
     println(result)
     println(result2)
+}
+
+fun rob(nums: IntArray): Int {
+    //偷钱问题，不可以偷邻家，求偷最高金额
+
+}
+
+fun rotate(nums: IntArray, k: Int): Unit {
+    //数组往右移动k个元素
+    //如果说k的值大于数组的长度，那就是等于转圈了，那就得刨除
+    var real = k%nums.size
+    //接下来需要移动数组数据，正常移动每一次就是On real*On 这个太复杂的  如果开备用数组，那么空间损失大
+    var count = 0
+    var start = 0
+    while (count < nums.size) {
+        var current = start
+        var prev = nums[start]
+        do {
+            val next = (current + real) % nums.size
+            val temp = nums[next]
+            nums[next] = prev
+            prev = temp
+            current = next
+            count++
+        } while (start != current)
+          start++
+    }
+}
+
+fun trailingZeroes(n: Int): Int {
+    var count = 0
+    var i = n
+    //算阶乘，然后返回末尾有多少个0  要求O(log n)
+    //分析  阶乘本身肯定是要做的，但是这题应该是存在数学的规律  不然如果一定做阶乘  肯定是n方的
+    //5最后是120  6应该是6*120  7就是7*6*120 8*42*120 72*42*120 推导来看，只要元数据是5 10 15 20，多一个5 那就会多一个0
+    while (i > 0) {
+        count += i / 5
+        i /= 5
+    }
+    return count
+}
+
+fun titleToNumber(s: String): Int {
+    //反向求数字这次
+    var charArray = s.toCharArray()
+    var number = 0
+    var current = 0
+    for(index in 0 until charArray.size){
+        current += (charArray[index] - 64).toInt()
+        for(count in charArray.size - index -1 downTo  1){
+            current*=26
+        }
+        number+=current
+        current=0
+    }
+    return number
 }
 
 fun majorityElement(nums: IntArray): Int {
